@@ -18,7 +18,7 @@ public class SpotifyMain extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.spotify_main);
         initUI();
-        setVaues();
+        setVaues();//f
     }
 
     private void setVaues() {
