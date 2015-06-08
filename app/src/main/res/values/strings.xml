@@ -11,4 +11,5 @@
     <string name="ant_terminator">BUILD IT BIGGER</string>
     <string name="materialize">BACON READER</string>
     <string name="capstone">CAPSTONE:MY OWN APP</string>
+    <string name="title_activity_spotify_main">SpotifyMain</string>
 </resources>

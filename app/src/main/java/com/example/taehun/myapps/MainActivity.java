@@ -1,5 +1,6 @@
 package com.example.taehun.myapps;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
@@ -57,7 +58,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
          switch (v.getId()){
             case R.id.button:
-                Toast.makeText(MainActivity.this,getString(R.string.media_streamer),Toast.LENGTH_SHORT ).show();
+                startActivity(new Intent(this,SpotifyMain.class));
+//                Toast.makeText(MainActivity.this,getString(R.string.media_streamer),Toast.LENGTH_SHORT ).show();
                 break;
             case R.id.button2:
                 Toast.makeText(MainActivity.this,getString(R.string.super_duo1),Toast.LENGTH_SHORT ).show();
