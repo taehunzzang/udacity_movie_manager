@@ -10,10 +10,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-
 public class MainActivity extends ActionBarActivity implements View.OnClickListener{
-
-
     Button button,button2,button3,button4,button5, button6;
     ImageView testPicasso;
     @Override
@@ -24,12 +21,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         initListener();
         testImageView();
     }
-
     private void testImageView() {
-        Picasso.with(this).load("http://i.imgur.com/DvpvklR.png").into(testPicasso);
+//        Picasso.with(this).load("http://i.imgur.com/DvpvklR.png").into(testPicasso);
     }
-
-
     private void initListener() {
         button.setOnClickListener(this);
         button2.setOnClickListener(this);
@@ -37,8 +31,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         button4.setOnClickListener(this);
         button5.setOnClickListener(this);
         button6.setOnClickListener(this);
-
-
     }
 
     private void setUI() {
@@ -48,14 +40,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         button4 = (Button) findViewById(R.id.button4);
         button5 = (Button) findViewById(R.id.button5);
         button6 = (Button) findViewById(R.id.button6);
-        testPicasso = (ImageView)findViewById(R.id.testPicasso);
-
+//        testPicasso = (ImageView)findViewById(R.id.testPicasso);
     }
-
 
     @Override
     public void onClick(View v) {
-
          switch (v.getId()){
             case R.id.button:
                 startActivity(new Intent(this,SpotifyMain.class));
@@ -76,7 +65,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             case R.id.button6:
                 Toast.makeText(MainActivity.this,getString(R.string.capstone),Toast.LENGTH_SHORT ).show();
                 break;
-
         }
     }
 }
