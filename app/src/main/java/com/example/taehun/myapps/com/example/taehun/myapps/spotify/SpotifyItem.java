@@ -1,4 +1,4 @@
-package com.example.taehun.myapps;
+package com.example.taehun.myapps.com.example.taehun.myapps.spotify;
 
 /**
  * Created by taehun on 15. 6. 9..

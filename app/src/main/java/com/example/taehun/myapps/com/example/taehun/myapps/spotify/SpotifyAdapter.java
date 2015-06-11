@@ -1,4 +1,4 @@
-package com.example.taehun.myapps;
+package com.example.taehun.myapps.com.example.taehun.myapps.spotify;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.taehun.myapps.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -31,16 +34,22 @@ public class SpotifyAdapter extends ArrayAdapter<SpotifyItem> {
         if(convertView == null){
             holder = new ViewHolder();
             convertView = mInflater.inflate(R.layout.spotify_main_item,null);
+            holder.artName = (TextView) convertView.findViewById(R.id.artName);
+            holder.artImage = (ImageView) convertView.findViewById(R.id.artImage);
+
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder) convertView.getTag();
         }
+
+        holder.artName.setText(items.get(position).getArtistName());
+        Picasso.with(ctx).load(items.get(position).getImgName()).into(holder.artImage);
         return convertView;
     }
     class ViewHolder {
 
-        TextView contactname;
-        ImageView addfriendbtn;
+        TextView artName;
+        ImageView artImage;
 
     }
 }
