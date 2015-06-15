@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".com.example.taehun.myapps.spotify.SpotifyMain"
+            android:name=".spotify.SpotifyMain"
             android:label="@string/title_activity_spotify_main" >
         </activity>
     </application>

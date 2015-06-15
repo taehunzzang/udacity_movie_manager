@@ -1,4 +1,4 @@
-package com.example.taehun.myapps.com.example.taehun.myapps.spotify;
+package com.example.taehun.myapps.spotify;
 
 import android.os.AsyncTask;
 import android.os.Bundle;

@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.taehun.myapps.com.example.taehun.myapps.spotify.SpotifyMain;
+import com.example.taehun.myapps.spotify.SpotifyMain;
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener{
     Button button,button2,button3,button4,button5, button6;
