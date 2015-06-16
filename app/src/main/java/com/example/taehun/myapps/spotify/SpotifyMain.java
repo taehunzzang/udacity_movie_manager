@@ -1,13 +1,18 @@
 package com.example.taehun.myapps.spotify;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.taehun.myapps.R;
@@ -52,46 +57,59 @@ public class SpotifyMain extends ActionBarActivity {
         itemListiew = (ListView) findViewById(R.id.itemListiew);
         artistKeyword = (EditText) findViewById(R.id.artistKeyword);
         artistSearch = (Button) findViewById(R.id.artistSearch);
+
+        artistKeyword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    runSpotifyAPI();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
-    public void searchClick(View v){
-        Toast.makeText(this,"" ,Toast.LENGTH_SHORT ).show();
 
-
-        new InternetAccess().execute();
-
-//        spotify.getAlbum("Beyonce", new Callback<Album>() {
-//            @Override
-//            public void success(Album album, Response response) {
-//                Log.d("Album success", album.name);
-////                album.images;
-//            }
-//
-//            @Override
-//            public void failure(RetrofitError error) {
-//                Log.d("Album failure", error.toString());
-//            }
-//        });
-
-
+    public void searchClick(View v) {
+        runSpotifyAPI();
     }
-    class InternetAccess extends AsyncTask<Void,Void,Void>{
+
+    private void runSpotifyAPI() {
+        if (artistKeyword.getText().length() == 0) {
+            Toast.makeText(this, getResources().getString(R.string.empty_keyword), Toast.LENGTH_SHORT).show();
+        } else {
+            new InternetAccess().execute();
+            hideKeyboard();
+        }
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(artistKeyword.getWindowToken(), 0);
+    }
+
+    class InternetAccess extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
 
         @Override
         protected Void doInBackground(Void... params) {
             SpotifyApi api = new SpotifyApi();
             SpotifyService spotify = api.getService();
-            final ArtistsPager results = spotify.searchArtists("coldplay");
+            final ArtistsPager results = spotify.searchArtists(artistKeyword.getText().toString());
             Log.e("", " results.artists : " + results);
             int loopCnt = 10;
-            if(results.artists.total<10){
+            if (results.artists.total < 10) {
                 loopCnt = results.artists.total;
             }
-            for (int i =0;i<loopCnt;i++){
+            for (int i = 0; i < loopCnt; i++) {
                 Log.e("", " results.artists : " + results.artists.items.get(i).name);
                 SpotifyItem item = new SpotifyItem();
                 item.setArtistName(results.artists.items.get(i).name);
                 item.setArtistEtc(results.artists.items.get(i).uri);
-                for(int j =0;j<results.artists.items.get(i).images.size();j++){
+                for (int j = 0; j < results.artists.items.get(i).images.size(); j++) {
 
                     item.setImgName(results.artists.items.get(i).images.get(j).url);
                 }
