@@ -1,6 +1,8 @@
 package com.example.taehun.myapps.spotify;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -35,6 +37,7 @@ public class SpotifyMain extends ActionBarActivity {
     Button artistSearch;
 
     private Handler handler;
+    ProgressDialog progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +95,23 @@ public class SpotifyMain extends ActionBarActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+//            setProgressBarIndeterminateVisibility(true);
+
+            progressBar = new ProgressDialog(SpotifyMain.this);
+            progressBar.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                @Override
+                public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                        progressBar.dismiss();
+                    }
+                    return false;
+                }
+            });
+            progressBar.setCancelable(false);
+            progressBar.setTitle("title");
+            progressBar.setMessage("wait");
+            progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressBar.show();
         }
 
         @Override
@@ -100,22 +120,24 @@ public class SpotifyMain extends ActionBarActivity {
             SpotifyService spotify = api.getService();
             final ArtistsPager results = spotify.searchArtists(artistKeyword.getText().toString());
             Log.e("", " results.artists : " + results);
-            int loopCnt = 10;
-            if (results.artists.total < 10) {
-                loopCnt = results.artists.total;
-            }
-            for (int i = 0; i < loopCnt; i++) {
-                Log.e("", " results.artists : " + results.artists.items.get(i).name);
-                SpotifyItem item = new SpotifyItem();
-                item.setArtistName(results.artists.items.get(i).name);
-                item.setArtistEtc(results.artists.items.get(i).uri);
-                for (int j = 0; j < results.artists.items.get(i).images.size(); j++) {
+            Log.e("", " resutl 1 : " + results.artists.limit);
 
-                    item.setImgName(results.artists.items.get(i).images.get(j).url);
+
+            items.clear();
+            if (results.artists.total > 0) {
+                for (int i = 0; i < results.artists.items.size(); i++) {
+                    Log.e("", " results.artists : " + results.artists.items.get(i).name);
+                    SpotifyItem item = new SpotifyItem();
+                    item.setArtistName(results.artists.items.get(i).name);
+                    item.setArtistEtc(results.artists.items.get(i).uri);
+                    for (int j = 0; j < results.artists.items.get(i).images.size(); j++) {
+
+                        item.setImgName(results.artists.items.get(i).images.get(j).url);
+                    }
+
+                    items.add(item);
+
                 }
-
-                items.add(item);
-
             }
             return null;
         }
@@ -123,7 +145,11 @@ public class SpotifyMain extends ActionBarActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+//            setProgressBarIndeterminateVisibility(false);
+            progressBar.dismiss();
             adapter.notifyDataSetChanged();
         }
     }
+
+
 }
