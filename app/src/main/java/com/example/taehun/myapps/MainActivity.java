@@ -2,7 +2,7 @@ package com.example.taehun.myapps;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.example.taehun.myapps.spotify.SpotifyMain;
 
-public class MainActivity extends ActionBarActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     Button button,button2,button3,button4,button5, button6;
     ImageView testPicasso;
     @Override

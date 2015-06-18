@@ -15,4 +15,6 @@
     <!--search part-->
     <string name="searchBtn">Search</string>
     <string name="empty_keyword">Empty keyword.</string>
+    <string name="no_result_item">No Result!</string>
+    <string name="title_activity_spotify_detail">SpotifyDetailActivity</string>
 </resources>

@@ -22,6 +22,14 @@
             android:name=".spotify.SpotifyMain"
             android:label="@string/title_activity_spotify_main" >
         </activity>
+        <activity
+            android:name=".spotify.SpotifyDetailActivity"
+            android:label="@string/title_activity_spotify_detail"
+            android:parentActivityName=".spotify.SpotifyMain" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.taehun.myapps.spotify.SpotifyMain" />
+        </activity>
     </application>
 
 </manifest>

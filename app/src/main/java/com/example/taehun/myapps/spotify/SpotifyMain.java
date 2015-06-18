@@ -3,16 +3,19 @@ package com.example.taehun.myapps.spotify;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,8 +29,8 @@ import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.ArtistsPager;
 
-
-public class SpotifyMain extends ActionBarActivity {
+//AppCompatActivity 모든 레벨에서 같은 ui를 보이게 하기 위해서.
+public class SpotifyMain extends AppCompatActivity {
 
     ListView itemListiew;
     ArrayList<SpotifyItem> items;
@@ -38,7 +41,7 @@ public class SpotifyMain extends ActionBarActivity {
 
     private Handler handler;
     ProgressDialog progressBar;
-
+    LinearLayout noResultLL;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +63,8 @@ public class SpotifyMain extends ActionBarActivity {
         itemListiew = (ListView) findViewById(R.id.itemListiew);
         artistKeyword = (EditText) findViewById(R.id.artistKeyword);
         artistSearch = (Button) findViewById(R.id.artistSearch);
+        noResultLL = (LinearLayout) findViewById(R.id.noResultLL);
+
 
         artistKeyword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -69,6 +74,16 @@ public class SpotifyMain extends ActionBarActivity {
                     return true;
                 }
                 return false;
+            }
+        });
+
+        itemListiew.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(SpotifyMain.this,SpotifyDetailActivity.class);
+                intent.putExtra("uniqueId",items.get(position).getUniqueId());
+                startActivity(new Intent(SpotifyMain.this,SpotifyDetailActivity.class));
+                Log.e("","onItemClick~~~~");
             }
         });
     }
@@ -90,6 +105,8 @@ public class SpotifyMain extends ActionBarActivity {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(artistKeyword.getWindowToken(), 0);
     }
+
+
 
     class InternetAccess extends AsyncTask<Void, Void, Void> {
         @Override
@@ -119,6 +136,7 @@ public class SpotifyMain extends ActionBarActivity {
             SpotifyApi api = new SpotifyApi();
             SpotifyService spotify = api.getService();
             final ArtistsPager results = spotify.searchArtists(artistKeyword.getText().toString());
+
             Log.e("", " results.artists : " + results);
             Log.e("", " resutl 1 : " + results.artists.limit);
 
@@ -130,13 +148,11 @@ public class SpotifyMain extends ActionBarActivity {
                     SpotifyItem item = new SpotifyItem();
                     item.setArtistName(results.artists.items.get(i).name);
                     item.setArtistEtc(results.artists.items.get(i).uri);
+                    item.setUniqueId(results.artists.items.get(i).id);
                     for (int j = 0; j < results.artists.items.get(i).images.size(); j++) {
-
                         item.setImgName(results.artists.items.get(i).images.get(j).url);
                     }
-
                     items.add(item);
-
                 }
             }
             return null;
@@ -148,6 +164,13 @@ public class SpotifyMain extends ActionBarActivity {
 //            setProgressBarIndeterminateVisibility(false);
             progressBar.dismiss();
             adapter.notifyDataSetChanged();
+            if (adapter.getCount()==0){
+                noResultLL.setVisibility(View.VISIBLE);
+                itemListiew.setVisibility(View.GONE);
+            }else{
+                noResultLL.setVisibility(View.GONE);
+                itemListiew.setVisibility(View.VISIBLE);
+            }
         }
     }
 

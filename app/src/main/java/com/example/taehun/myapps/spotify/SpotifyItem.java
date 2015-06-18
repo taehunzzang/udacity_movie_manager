@@ -4,9 +4,19 @@ package com.example.taehun.myapps.spotify;
  * Created by taehun on 15. 6. 9..
  */
 public class SpotifyItem {
-    String imgName;
-    String artistName;
-    String artistEtc;
+
+    private String imgName;
+    private String artistName;
+    private String artistEtc;
+    private String uniqueId;
+
+    public String getUniqueId() {
+        return uniqueId;
+    }
+
+    public void setUniqueId(String uniqueId) {
+        this.uniqueId = uniqueId;
+    }
 
     public String getImgName() {
         return imgName;
