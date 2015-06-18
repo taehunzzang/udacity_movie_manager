@@ -14,7 +14,13 @@ import com.example.taehun.myapps.R;
 
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
+import kaaes.spotify.webapi.android.models.Album;
 import kaaes.spotify.webapi.android.models.AlbumsPager;
+import kaaes.spotify.webapi.android.models.Tracks;
+import kaaes.spotify.webapi.android.models.TracksPager;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class SpotifyDetailActivity extends AppCompatActivity {
     String uniqueId;
@@ -28,6 +34,7 @@ public class SpotifyDetailActivity extends AppCompatActivity {
         }catch (Exception e){
 
         }
+        new InternetAccess().execute();
 
     }
 
@@ -57,13 +64,36 @@ public class SpotifyDetailActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
             SpotifyApi api = new SpotifyApi();
+            try {
+
+
             SpotifyService spotify = api.getService();
-//            final ArtistsPager results = spotify.searchArtists(artistKeyword.getText().toString());
-//            final ArtistsPager results = spotify.searchAlbums(uniqueId);
-            final AlbumsPager results= spotify.searchAlbums(uniqueId);
+//          final TracksPager results= spotify.searchTracks(uniqueId);
+//          Tracks test1 =  spotify.getArtistTopTrack(uniqueId);
+//            spotify.getAlbum("2dIGnmEIy1WZIcZCFSj6i8", new Callback<Album>() {
+//                @Override
+//                public void success(Album album, Response response) {
+//                    Log.d("Album success", album.name);
+//                }
+//
+//                @Override
+//                public void failure(RetrofitError error) {
+//                    Log.d("Album failure", error.toString());
+//                }
+//            });
+                Log.e("", "start_getAlbum"+uniqueId);
+                spotify.getAlbum("2dIGnmEIy1WZIcZCFSj6i8", new Callback<Album>() {
+                    @Override
+                    public void success(Album album, Response response) {
+                        Log.e("", "getAlbum_response : " + response);
+                    }
 
-
-            Log.e("", " results.artists : " + results);
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.e("", "error.toString(): " + error.toString());
+                    }
+                });
+                Log.e("", "end_getAlbum");
 //            Log.e("", " resutl 1 : " + results.artists.limit);
 
 
@@ -81,12 +111,16 @@ public class SpotifyDetailActivity extends AppCompatActivity {
 ////                    items.add(item);
 //                }
 //            }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            progressBar.dismiss();
 //            setProgressBarIndeterminateVisibility(false);
 //            progressBar.dismiss();
 //            adapter.notifyDataSetChanged();
