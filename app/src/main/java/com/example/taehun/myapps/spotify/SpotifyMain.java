@@ -23,7 +23,6 @@ import android.widget.Toast;
 import com.example.taehun.myapps.R;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.logging.Handler;
 
 import kaaes.spotify.webapi.android.SpotifyApi;
@@ -85,9 +84,10 @@ public class SpotifyMain extends AppCompatActivity {
                 SpotifyItem tempItem = (SpotifyItem)parent.getItemAtPosition(position);
 
                 Intent intent = new Intent(SpotifyMain.this,SpotifyDetailActivity.class);
-                intent.putExtra("uniqueId", tempItem.getUniqueId());
-                startActivity(new Intent(SpotifyMain.this,SpotifyDetailActivity.class));
                 Log.e("","onItemClick~~~~"+tempItem.getUniqueId());
+                intent.putExtra("uniqueId", tempItem.getUniqueId());
+                startActivity(intent);
+
             }
         });
     }
