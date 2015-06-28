@@ -12,6 +12,7 @@ import com.example.taehun.myapps.spotify.SpotifyMain;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     Button button,button2,button3,button4,button5, button6;
+    // api key : c64cba74ee6e14eae65737f936242f41
     ImageView testPicasso;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

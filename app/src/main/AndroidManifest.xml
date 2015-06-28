@@ -30,6 +30,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.taehun.myapps.spotify.SpotifyMain" />
         </activity>
+        <activity
+            android:name=".movies.MovieMain"
+            android:label="@string/title_activity_movie_main"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.taehun.myapps.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
