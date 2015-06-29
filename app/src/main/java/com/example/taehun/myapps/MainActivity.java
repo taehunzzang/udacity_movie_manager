@@ -3,16 +3,17 @@ package com.example.taehun.myapps;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.taehun.myapps.spotify.SpotifyMain;
+import com.example.taehun.myapps.movies.MovieMain;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     Button button,button2,button3,button4,button5, button6;
-    // api key : c64cba74ee6e14eae65737f936242f41
+    // api key :
     ImageView testPicasso;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +49,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
          switch (v.getId()){
             case R.id.button:
-                startActivity(new Intent(this,SpotifyMain.class));
-//                Toast.makeText(MainActivity.this,getString(R.string.media_streamer),Toast.LENGTH_SHORT ).show();
+                startActivity(new Intent(this,MovieMain.class));
+                Log.e("","movide!!!!");
+//                startActivity(new Intent(this,SpotifyMain.class));
+                Toast.makeText(MainActivity.this,getString(R.string.media_streamer),Toast.LENGTH_SHORT ).show();
                 break;
             case R.id.button2:
                 Toast.makeText(MainActivity.this,getString(R.string.super_duo1),Toast.LENGTH_SHORT ).show();
