@@ -5,12 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.android.volley.toolbox.Volley;
 import com.example.taehun.myapps.R;
 
 public class MovieMain extends AppCompatActivity {
 
-    Volley a;
+//    Volley a;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
