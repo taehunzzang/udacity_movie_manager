@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -31,7 +32,8 @@ public class MovieMain extends AppCompatActivity {
 TextView mTxtDegrees, mTxtWeather, mTxtError;
     MoviesVolley helper = MoviesVolley.getInstance();
     final static String MY_API_KEY = "c64cba74ee6e14eae65737f936242f41";
-    final static String RECENT_API_ENDPOINT = "http://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key="+MY_API_KEY;
+    String sortType="popularity.desc";
+
     ArrayList<MovieItem> mData;
     MovieGridAdapter mAdapter;
     GridView mGridview;
@@ -54,7 +56,7 @@ TextView mTxtDegrees, mTxtWeather, mTxtError;
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MovieItem item  = (MovieItem) parent.getItemAtPosition(position);
                 Intent intent = new Intent(MovieMain.this, MovieDetail.class);
-                intent.putExtra("title",item.getTitle());
+                intent.putExtra("title",item.getOriginal_title());
                 intent.putExtra("image",item.getPoster_path());
                 intent.putExtra("releaseDate",item.getRelease_date());
                 intent.putExtra("story",item.getOverview());
@@ -65,12 +67,16 @@ TextView mTxtDegrees, mTxtWeather, mTxtError;
     }
 
     public void loadMoviesData(){
+        mData.clear();
+        String RECENT_API_ENDPOINT = "http://api.themoviedb.org/3/discover/movie?sort_by="+sortType+"&api_key="+MY_API_KEY;
+        Log.e("","mData_ : "+mData.size()+"url : "+RECENT_API_ENDPOINT);
         CustomJsonRequest request = new CustomJsonRequest
                 (Request.Method.GET, RECENT_API_ENDPOINT, null, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+
                             Log.e("","movies_response : "+response);
 //                            String results = response.optString("results");
                             JSONArray mJsonArryaResults = response.getJSONArray("results");
@@ -91,6 +97,7 @@ TextView mTxtDegrees, mTxtWeather, mTxtError;
                                 subItem.setVote_average(mJsonObject.optString("vote_average"));
                                 subItem.setVote_count(mJsonObject.optString("vote_count"));
                                 mData.add(subItem);
+                                Log.e("", "mData_ : " + mData.size());
 
                             }
                             mAdapter.notifyDataSetChanged();
@@ -149,7 +156,15 @@ TextView mTxtDegrees, mTxtWeather, mTxtError;
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_popular) {
+            Toast.makeText(MovieMain.this,"popular",Toast.LENGTH_SHORT).show();;
+            sortType="popularity.desc";
+            loadMoviesData();
+            return true;
+        }else if (id == R.id.action_rated) {
+            Toast.makeText(MovieMain.this,"rated",Toast.LENGTH_SHORT).show();;
+            sortType="vote_average.desc";
+            loadMoviesData();
             return true;
         }
         return super.onOptionsItemSelected(item);

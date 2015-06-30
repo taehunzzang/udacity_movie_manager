@@ -8,7 +8,7 @@
         android:id="@+id/rowImage"
         class="com.example.taehun.myapps.movies.SquareImageView"
         android:layout_width="match_parent"
-        android:scaleType="fitCenter"
+        android:scaleType="centerCrop"
         android:layout_height="match_parent"
         />
 

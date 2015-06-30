@@ -19,4 +19,7 @@
     <string name="title_activity_spotify_detail">SpotifyDetailActivity</string>
     <string name="title_activity_movie_main">MovieMain</string>
     <string name="title_activity_movie_detail">MovieDetail</string>
+    <!--movie-->
+    <string name ="popular">Most Popular</string>
+    <string name ="rated">Highest Rated</string>
 </resources>
