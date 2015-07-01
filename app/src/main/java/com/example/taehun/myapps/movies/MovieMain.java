@@ -1,19 +1,14 @@
 package com.example.taehun.myapps.movies;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -28,8 +23,6 @@ import java.util.ArrayList;
 
 public class MovieMain extends AppCompatActivity {
 
-//    Volley a;
-TextView mTxtDegrees, mTxtWeather, mTxtError;
     MoviesVolley helper = MoviesVolley.getInstance();
     final static String MY_API_KEY = "c64cba74ee6e14eae65737f936242f41";
     String sortType="popularity.desc";
@@ -43,7 +36,6 @@ TextView mTxtDegrees, mTxtWeather, mTxtError;
         setContentView(R.layout.activity_movie_main);
         initData();
         loadMoviesData();
-        InitilizeGridLayout();
     }
 
     private void initData() {
@@ -56,10 +48,7 @@ TextView mTxtDegrees, mTxtWeather, mTxtError;
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MovieItem item  = (MovieItem) parent.getItemAtPosition(position);
                 Intent intent = new Intent(MovieMain.this, MovieDetail.class);
-                intent.putExtra("title",item.getOriginal_title());
-                intent.putExtra("image",item.getPoster_path());
-                intent.putExtra("releaseDate",item.getRelease_date());
-                intent.putExtra("story",item.getOverview());
+                intent.putExtra("movieItem",item);
                 startActivity(intent);
             }
         });
@@ -83,6 +72,7 @@ TextView mTxtDegrees, mTxtWeather, mTxtError;
                             for (int i =0;i<mJsonArryaResults.length();i++){
                                 JSONObject mJsonObject  = mJsonArryaResults.getJSONObject(i);
                                 MovieItem subItem = new MovieItem();
+                                subItem.setTitle(mJsonObject.optString("title"));
                                 subItem.setAdult(mJsonObject.optBoolean("adult"));
                                 subItem.setBackdrop_path(mJsonObject.optString("backdrop_path"));
 //                                subItem.setGenre_ids(mJsonObject.optBoolean("adult"));
@@ -99,6 +89,9 @@ TextView mTxtDegrees, mTxtWeather, mTxtError;
                                 mData.add(subItem);
                                 Log.e("", "mData_ : " + mData.size());
 
+
+//                                String genre_ids;
+
                             }
                             mAdapter.notifyDataSetChanged();
 
@@ -106,46 +99,18 @@ TextView mTxtDegrees, mTxtWeather, mTxtError;
 
                         } catch (Exception e) {
                             e.printStackTrace();
-//                            txtError(e);
                         }
 
                     }
                 }, new Response.ErrorListener() {
-
                     @Override
                     public void onErrorResponse(VolleyError error) {
-//                        txtError(error);
                     }
                 });
         request.setPriority(Request.Priority.HIGH);
         helper.add(request);
 
     }
-
-
-    private void InitilizeGridLayout() {
-        Resources r = getResources();
-        float padding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                4/*AppConst.GRID_PADDING*/, r.getDisplayMetrics());
-
-        // Setting number of grid columns
-        mGridview.setNumColumns(2);
-//        mGridview.setNumColumns(pref.getNoOfGridColumns());
-        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
-        int width = dm.widthPixels;
-        int height = dm.heightPixels;
-
-        mGridview.setColumnWidth(width);
-//        mGridview.setStretchMode(GridView.NO_STRETCH);
-//        mGridview.setPadding((int) padding, (int) padding, (int) padding,
-//                (int) padding);
-
-        // Setting horizontal and vertical padding
-//        mGridview.setHorizontalSpacing((int) padding);
-//        mGridview.setVerticalSpacing((int) padding);
-    }
-
-
 
 
     @Override
@@ -157,12 +122,12 @@ TextView mTxtDegrees, mTxtWeather, mTxtError;
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_popular) {
-            Toast.makeText(MovieMain.this,"popular",Toast.LENGTH_SHORT).show();;
+//            Toast.makeText(MovieMain.this,"popular",Toast.LENGTH_SHORT).show();;
             sortType="popularity.desc";
             loadMoviesData();
             return true;
         }else if (id == R.id.action_rated) {
-            Toast.makeText(MovieMain.this,"rated",Toast.LENGTH_SHORT).show();;
+//            Toast.makeText(MovieMain.this,"rated",Toast.LENGTH_SHORT).show();;
             sortType="vote_average.desc";
             loadMoviesData();
             return true;

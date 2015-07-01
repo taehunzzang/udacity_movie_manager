@@ -1,24 +1,15 @@
 package com.example.taehun.myapps.movies;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by taehun on 15. 6. 29..
  */
-public class MovieItem {
-//    "adult":false,
-//            "backdrop_path":"\/dkMD5qlogeRMiEixC4YNPUvax2T.jpg",
-//            "genre_ids":[28,12,878,53],
-//            "id":135397,
-//            "original_language":"en",
-//            "original_title":"Jurassic World",
-//            "overview":"Twenty-two years after the events of Jurassic Park, Isla Nublar now features a fully functioning dinosaur theme park, Jurassic World, as originally envisioned by John Hammond.",
-//            "release_date":"2015-06-12",
-//            "poster_path":"\/uXZYawqUsChGSj54wcuBtEdUJbh.jpg",
-//            "popularity":97.733248,
-//            "title":"Jurassic World",
-//            "video":false,
-//            "vote_average":7,"vote_count":742
+public class MovieItem implements Parcelable {
 
-    boolean adult=false;
+
+    boolean adult = false;
     String backdrop_path;
     String genre_ids;
     String id;
@@ -29,9 +20,17 @@ public class MovieItem {
     String poster_path;
     String popularity;
     String title;
-    boolean video=false;
+    boolean video = false;
     String vote_average;
     String vote_count;
+
+
+    public MovieItem() {
+    }
+
+    public MovieItem(Parcel in) {
+        readFromParcel(in);
+    }
 
 
     public boolean isAdult() {
@@ -145,4 +144,60 @@ public class MovieItem {
     public void setVote_count(String vote_count) {
         this.vote_count = vote_count;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte((byte) (adult ? 1 : 0));
+        dest.writeString(backdrop_path);
+        dest.writeString(genre_ids);
+        dest.writeString(id);
+        dest.writeString(original_language);
+        dest.writeString(original_title);
+        dest.writeString(overview);
+        dest.writeString(release_date);
+        dest.writeString(poster_path);
+        dest.writeString(popularity);
+        dest.writeString(title);
+        dest.writeByte((byte) (video ? 1 : 0));
+        dest.writeString(vote_average);
+        dest.writeString(vote_count);
+        dest.writeString(title);
+
+    }
+
+    private void readFromParcel(Parcel in) {
+        adult = in.readByte() != 0;
+        backdrop_path = in.readString();
+        genre_ids = in.readString();
+        id = in.readString();
+        original_language = in.readString();
+        original_title = in.readString();
+        overview = in.readString();
+        release_date = in.readString();
+        poster_path = in.readString();
+        popularity = in.readString();
+        title = in.readString();
+        video = in.readByte() != 0;
+        vote_average = in.readString();
+        vote_count = in.readString();
+
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+
+        @Override
+        public Object createFromParcel(Parcel in) {
+            return new MovieItem(in);
+        }
+
+        @Override
+        public Object[] newArray(int size) {
+            return new MovieItem[size];
+        }
+    };
 }
