@@ -1,48 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.taehun.myapps" >
+<manifest
+    package="com.example.taehun.myapps"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name=".MoviesVolley"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        android:theme="@style/AppTheme">
 
-                <category android:name="android.intent.category.LAUNCHER" />
+        <activity
+            android:name=".MovieMain"
+            android:label="@string/title_activity_movie_main"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
-            android:name=".spotify.SpotifyMain"
-            android:label="@string/title_activity_spotify_main" >
-        </activity>
-        <activity
-            android:name=".spotify.SpotifyDetailActivity"
-            android:label="@string/title_activity_spotify_detail"
-            android:parentActivityName=".spotify.SpotifyMain" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.taehun.myapps.spotify.SpotifyMain" />
-        </activity>
-        <activity
-            android:name=".movies.MovieMain"
-            android:label="@string/title_activity_movie_main"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.taehun.myapps.MainActivity" />
-        </activity>
-        <activity
-            android:name=".movies.MovieDetail"
-            android:parentActivityName=".movies.MovieMain"
-            android:label="@string/title_activity_movie_detail">
+            android:name=".MovieDetail"
+            android:label="@string/title_activity_movie_detail"
+            android:parentActivityName=".MovieMain">
             <meta-data
                 android:name="android.suport.PARENT_ACTIVITY"
                 android:value="com.example.taehun.myapps.MainActivity"/>

@@ -1,4 +1,4 @@
-package com.example.taehun.myapps.movies;
+package com.example.taehun.myapps;
 
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;

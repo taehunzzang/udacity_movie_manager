@@ -1,4 +1,4 @@
-package com.example.taehun.myapps.movies;
+package com.example.taehun.myapps;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
-import com.example.taehun.myapps.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -46,10 +45,12 @@ public class MovieGridAdapter extends ArrayAdapter<MovieItem> {
         int width = metrics.widthPixels;
         int height = metrics.heightPixels;
 
-        mViewHolder.rowImage.setMinimumHeight(height/2);
+        mViewHolder.rowImage.setMinimumHeight(height / 2);
 
+        if(mData.get(position).getPoster_path() != null){
+            Picasso.with(context).load(URL_PRE_FIX+mData.get(position).getPoster_path()).into(mViewHolder.rowImage);
+        }
 
-        Picasso.with(context).load(URL_PRE_FIX+mData.get(position).getPoster_path()).into(mViewHolder.rowImage);
 
 
         return convertView;

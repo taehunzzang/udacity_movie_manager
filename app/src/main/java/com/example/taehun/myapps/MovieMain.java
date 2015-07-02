@@ -1,4 +1,4 @@
-package com.example.taehun.myapps.movies;
+package com.example.taehun.myapps;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,8 +13,6 @@ import android.widget.GridView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.example.taehun.myapps.MoviesVolley;
-import com.example.taehun.myapps.R;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -26,6 +24,8 @@ public class MovieMain extends AppCompatActivity {
     MoviesVolley helper = MoviesVolley.getInstance();
     final static String MY_API_KEY = "c64cba74ee6e14eae65737f936242f41";
     String sortType="popularity.desc";
+    static final String STATE_SORTING = "sortType";
+
 
     ArrayList<MovieItem> mData;
     MovieGridAdapter mAdapter;
@@ -34,6 +34,14 @@ public class MovieMain extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_main);
+        if (savedInstanceState != null) {
+            // Restore value of members from saved state
+            sortType = savedInstanceState.getString(STATE_SORTING);
+        } else {
+            // Probably initialize members with default values for a new instance
+            sortType = "popularity.desc";
+        }
+
         initData();
         loadMoviesData();
     }
@@ -133,5 +141,11 @@ public class MovieMain extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putString(STATE_SORTING, sortType);
+        super.onSaveInstanceState(savedInstanceState);
     }
 }

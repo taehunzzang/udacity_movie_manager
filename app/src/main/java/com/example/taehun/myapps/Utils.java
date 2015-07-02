@@ -1,4 +1,4 @@
-package com.example.taehun.myapps.movies;
+package com.example.taehun.myapps;
 
 import android.app.WallpaperManager;
 import android.content.Context;

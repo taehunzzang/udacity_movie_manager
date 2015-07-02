@@ -6,7 +6,7 @@
 
     <view
         android:id="@+id/rowImage"
-        class="com.example.taehun.myapps.movies.SquareImageView"
+        class="com.example.taehun.myapps.SquareImageView"
         android:layout_width="match_parent"
         android:scaleType="centerCrop"
         android:layout_height="match_parent"

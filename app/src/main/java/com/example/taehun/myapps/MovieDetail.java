@@ -1,4 +1,4 @@
-package com.example.taehun.myapps.movies;
+package com.example.taehun.myapps;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,7 +6,6 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.taehun.myapps.R;
 import com.squareup.picasso.Picasso;
 
 public class MovieDetail extends AppCompatActivity {
@@ -31,8 +30,12 @@ public class MovieDetail extends AppCompatActivity {
         movieTitle.setText(mItem.getTitle());
         movieLaunch.setText(mItem.getRelease_date());
         movieRuningTime.setText("Rate : "+mItem.getVote_average());
-        movieDate.setText("Vote  : "+mItem.getVote_count());
-        Picasso.with(this).load(URL_PRE_FIX+mItem.getPoster_path()).into(movieImage);
+        movieDate.setText("Vote  : " + mItem.getVote_count());
+        if(mItem.getPoster_path() != null) {
+
+            Picasso.with(this).load(URL_PRE_FIX+mItem.getPoster_path()).into(movieImage);
+        }
+
         movieStroy.setText(mItem.getOverview());
     }
 

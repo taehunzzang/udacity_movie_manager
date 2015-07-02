@@ -9,4 +9,4 @@
     android:numColumns="2"
     android:gravity="center"
     android:stretchMode="columnWidth"
-    tools:context="com.example.taehun.myapps.movies.MovieMain"/>
+    tools:context="com.example.taehun.myapps.MovieMain"/>
