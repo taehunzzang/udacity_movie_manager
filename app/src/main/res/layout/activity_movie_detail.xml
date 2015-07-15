@@ -51,6 +51,7 @@
                 <ImageView
                     android:id="@+id/movieImage"
                     android:layout_width="match_parent"
+                    android:transitionName="transition_poster"
                     android:layout_height="match_parent"/>
             </LinearLayout>
 

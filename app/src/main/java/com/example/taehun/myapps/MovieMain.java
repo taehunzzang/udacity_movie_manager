@@ -1,12 +1,17 @@
 package com.example.taehun.myapps;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
@@ -30,10 +35,16 @@ public class MovieMain extends AppCompatActivity {
     ArrayList<MovieItem> mData;
     MovieGridAdapter mAdapter;
     GridView mGridview;
+
+    DbHelper mDbHelper;
+    SQLiteDatabase mdb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_movie_main);
+
         if (savedInstanceState != null) {
             // Restore value of members from saved state
             sortType = savedInstanceState.getString(STATE_SORTING);
@@ -44,7 +55,21 @@ public class MovieMain extends AppCompatActivity {
 
         initData();
         loadMoviesData();
+        mDbHelper = new DbHelper(this);
+        mdb = mDbHelper.getWritableDatabase();
+
+        loadGerneData();
     }
+
+    public void insert(String gerneNum, String gerneString) {
+
+        ContentValues values = new ContentValues();
+        values.put("gerneNum", Integer.parseInt(gerneNum));
+        values.put("gerneString", gerneString);
+        mdb.insert("movieDB", null, values); // 테이블/널컬럼핵/데이터(널컬럼핵=디폴트)
+        // tip : 마우스를 db.insert에 올려보면 매개변수가 어떤 것이 와야 하는지 알 수 있다.
+    }
+
 
     private void initData() {
         mData = new ArrayList<MovieItem>();
@@ -54,13 +79,41 @@ public class MovieMain extends AppCompatActivity {
         mGridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MovieItem item  = (MovieItem) parent.getItemAtPosition(position);
-                Intent intent = new Intent(MovieMain.this, MovieDetail.class);
-                intent.putExtra("movieItem",item);
-                startActivity(intent);
+                MovieItem item = (MovieItem) parent.getItemAtPosition(position);
+//                Intent intent = new Intent(MovieMain.this, MovieDetail.class);
+//                intent.putExtra("movieItem", item);
+//                startActivity(intent);
+
+                Intent intent = new Intent(MovieMain.this, MovieDetail.class); //DetailActivity.class is the second activity where i show the the movie details
+//                intent.putExtra("INTENT_KEY", passedMovie);
+                intent.putExtra("movieItem", item);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    ActivityOptionsCompat options = ActivityOptionsCompat.
+                            makeSceneTransitionAnimation(MovieMain.this,
+                                    view.findViewById(R.id.rowImage), "transition_poster");
+                    startActivity(intent, options.toBundle());
+                } else {
+                    startActivity(intent);
+                }
             }
         });
 
+    }
+    public void loadGerneData(){
+        String RECENT_API_ENDPOINT = "http://api.themoviedb.org/3/genre/movie/list?&api_key="+MY_API_KEY;
+        CustomJsonRequest request = new CustomJsonRequest(Request.Method.GET, RECENT_API_ENDPOINT, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject jsonObject) {
+                Log.e(""," jsonObject : "+jsonObject);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+            }
+        });
+        request.setPriority(Request.Priority.HIGH);
+        helper.add(request);
     }
 
     public void loadMoviesData(){

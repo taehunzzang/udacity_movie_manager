@@ -2,11 +2,14 @@ package com.example.taehun.myapps;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -36,6 +39,9 @@ public class MovieGridAdapter extends ArrayAdapter<MovieItem> {
             convertView = mInflater.inflate(R.layout.movie_row,null);
             mViewHolder = new ViewHolder();
             mViewHolder.rowImage = (ImageView) convertView.findViewById(R.id.rowImage);
+            mViewHolder.title = (TextView) convertView.findViewById(R.id.title);
+            mViewHolder.genre = (TextView) convertView.findViewById(R.id.genre);
+            mViewHolder.rateStar = (RatingBar) convertView.findViewById(R.id.rateStar);
             convertView.setTag(mViewHolder);
         }else{
             mViewHolder = (ViewHolder) convertView.getTag();
@@ -45,17 +51,23 @@ public class MovieGridAdapter extends ArrayAdapter<MovieItem> {
         int width = metrics.widthPixels;
         int height = metrics.heightPixels;
 
-        mViewHolder.rowImage.setMinimumHeight(height / 2);
-
+//        mViewHolder.rowImage.setMinimumHeight(height / 2);
+        Log.e("", " img : " + URL_PRE_FIX + mData.get(position).getPoster_path());
         if(mData.get(position).getPoster_path() != null){
             Picasso.with(context).load(URL_PRE_FIX+mData.get(position).getPoster_path()).into(mViewHolder.rowImage);
         }
 
-
+        mViewHolder.title.setText(mData.get(position).getTitle());
+        mViewHolder.genre.setText(mData.get(position).getTitle());
+        Log.e(""," star : "+Float.parseFloat(mData.get(position).getPopularity()));
+        mViewHolder.rateStar.setRating(Float.parseFloat(mData.get(position).getPopularity())/10);
 
         return convertView;
     }
     class ViewHolder{
         ImageView rowImage;
+        TextView title;
+        TextView genre;
+        RatingBar rateStar;
     }
 }
