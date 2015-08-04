@@ -30,6 +30,7 @@ public class SquareImageView extends ImageView {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int divider = 2;
 //        DisplayMetrics metrics = new DisplayMetrics();
 //        int width = metrics.widthPixels;
 //        int height = metrics.heightPixels;
@@ -37,7 +38,10 @@ public class SquareImageView extends ImageView {
 
 
         Display display = ((WindowManager)mCtx.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        int width1 = display.getWidth()/2;
+        if(display.getWidth()> display.getHeight()){
+            divider = 3;
+        }
+        int width1 = display.getWidth()/divider;
         float tempRate = (float)getMeasuredHeight()/(float)getMeasuredWidth();
         Log.e(""," H : "+getMeasuredHeight()+" W : "+getMeasuredWidth()+" R : "+tempRate);
 

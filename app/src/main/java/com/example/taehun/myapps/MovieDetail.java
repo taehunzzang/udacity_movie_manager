@@ -28,6 +28,7 @@ public class MovieDetail extends AppCompatActivity {
 //
 
         movieTitle.setText(mItem.getTitle());
+        movieTitle.setSelected(true);
         movieLaunch.setText(mItem.getRelease_date());
         movieRuningTime.setText("Rate : "+mItem.getVote_average());
         movieDate.setText("Vote  : " + mItem.getVote_count());

@@ -1,6 +1,7 @@
 package com.example.taehun.myapps;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
@@ -8,10 +9,12 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
@@ -20,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -31,7 +35,12 @@ public class MovieMain extends AppCompatActivity {
     String sortType="popularity.desc";
     static final String STATE_SORTING = "sortType";
 
+    String RECENT_VIDE = "http://api.themoviedb.org/3/movie/[ID]/videos?api_key="+MY_API_KEY;
+    String RECENT_REVIEW = "http://api.themoviedb.org/3/movie/[ID]/reviews?api_key="+MY_API_KEY;
 
+    //-Genre Data------
+    ArrayList<MovieGenresItems> mGenreItems;
+    //-------
     ArrayList<MovieItem> mData;
     MovieGridAdapter mAdapter;
     GridView mGridview;
@@ -53,12 +62,17 @@ public class MovieMain extends AppCompatActivity {
             sortType = "popularity.desc";
         }
 
+
+        mGenreItems = new ArrayList<MovieGenresItems>();
         initData();
+
+        loadGerneData();
+
         loadMoviesData();
         mDbHelper = new DbHelper(this);
         mdb = mDbHelper.getWritableDatabase();
 
-        loadGerneData();
+
     }
 
     public void insert(String gerneNum, String gerneString) {
@@ -75,6 +89,12 @@ public class MovieMain extends AppCompatActivity {
         mData = new ArrayList<MovieItem>();
         mAdapter = new MovieGridAdapter(this,R.layout.movie_row,mData);
         mGridview = (GridView) findViewById(R.id.gridView);
+        int divider = 2;
+        Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        if(display.getWidth()> display.getHeight()){
+            divider = 3;
+        }
+        mGridview.setNumColumns(divider);
         mGridview.setAdapter(mAdapter);
         mGridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -99,12 +119,32 @@ public class MovieMain extends AppCompatActivity {
         });
 
     }
+
     public void loadGerneData(){
         String RECENT_API_ENDPOINT = "http://api.themoviedb.org/3/genre/movie/list?&api_key="+MY_API_KEY;
         CustomJsonRequest request = new CustomJsonRequest(Request.Method.GET, RECENT_API_ENDPOINT, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
-                Log.e(""," jsonObject : "+jsonObject);
+                Log.e("", " jsonObject_Gerne : " + jsonObject);
+
+                try {
+                    JSONArray jArray = jsonObject.getJSONArray("genres");
+                    for(int i=0;i<jArray.length();i++){
+                        MovieGenresItems item = new MovieGenresItems();
+                        JSONObject jObj = jArray.getJSONObject(i);
+                        item.setGenreName(jObj.optString("name"));
+                        item.setId(jObj.optInt("id"));
+                        mGenreItems.add(item);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                for (MovieGenresItems item1 : mGenreItems){
+                        Log.e(""," item name : "+item1.getId()+"name : "+item1.getGenreName());
+                }
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -119,6 +159,8 @@ public class MovieMain extends AppCompatActivity {
     public void loadMoviesData(){
         mData.clear();
         String RECENT_API_ENDPOINT = "http://api.themoviedb.org/3/discover/movie?sort_by="+sortType+"&api_key="+MY_API_KEY;
+
+
         Log.e("","mData_ : "+mData.size()+"url : "+RECENT_API_ENDPOINT);
         CustomJsonRequest request = new CustomJsonRequest
                 (Request.Method.GET, RECENT_API_ENDPOINT, null, new Response.Listener<JSONObject>() {
@@ -136,7 +178,10 @@ public class MovieMain extends AppCompatActivity {
                                 subItem.setTitle(mJsonObject.optString("title"));
                                 subItem.setAdult(mJsonObject.optBoolean("adult"));
                                 subItem.setBackdrop_path(mJsonObject.optString("backdrop_path"));
-//                                subItem.setGenre_ids(mJsonObject.optBoolean("adult"));
+                                mJsonObject.optString("genre_ids");
+
+
+                                subItem.setGenre_ids(getGenreValue(mJsonObject.getJSONArray("genre_ids")));
                                 subItem.setId(mJsonObject.optString("id"));
                                 subItem.setOriginal_language(mJsonObject.optString("original_language"));
                                 subItem.setOriginal_title(mJsonObject.optString("original_title"));
@@ -173,6 +218,32 @@ public class MovieMain extends AppCompatActivity {
 
     }
 
+    private String getGenreValue(JSONArray genre_ids) {
+        int tempGenre = 0;
+        String returnGenre="";
+        for(int i=0;i<genre_ids.length();i++){
+            try {
+//                tempGenre = genre_ids.get(i).toString();
+                tempGenre = Integer.parseInt(genre_ids.get(i).toString());
+
+                for (int j = 0;j<mGenreItems.size();j++){
+                    if(tempGenre == mGenreItems.get(j).getId()){
+                        returnGenre = mGenreItems.get(j).getGenreName();
+                        break;
+                    }
+                }
+                if(returnGenre.length()!=0){
+                    break;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+//        mGenreItems
+        Log.e("","select_genre"+returnGenre);
+        return returnGenre;
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -182,14 +253,15 @@ public class MovieMain extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
         if (id == R.id.action_popular) {
-//            Toast.makeText(MovieMain.this,"popular",Toast.LENGTH_SHORT).show();;
+            item.setChecked(true);
             sortType="popularity.desc";
             loadMoviesData();
             return true;
         }else if (id == R.id.action_rated) {
-//            Toast.makeText(MovieMain.this,"rated",Toast.LENGTH_SHORT).show();;
-            sortType="vote_average.desc";
+            item.setChecked(true);
+            sortType="primary_release_date.desc";
             loadMoviesData();
             return true;
         }

@@ -58,7 +58,8 @@ public class MovieGridAdapter extends ArrayAdapter<MovieItem> {
         }
 
         mViewHolder.title.setText(mData.get(position).getTitle());
-        mViewHolder.genre.setText(mData.get(position).getTitle());
+        mViewHolder.title.setSelected(true);
+        mViewHolder.genre.setText(mData.get(position).getGenre_ids());
         Log.e(""," star : "+Float.parseFloat(mData.get(position).getPopularity()));
         mViewHolder.rateStar.setRating(Float.parseFloat(mData.get(position).getPopularity())/10);
 
