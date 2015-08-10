@@ -7,7 +7,7 @@
 
     <view
         android:id="@+id/rowImage"
-        class="com.example.taehun.myapps.SquareImageView"
+        class="com.example.taehun.myapps.util.SquareImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:transitionName="transition_poster"

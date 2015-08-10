@@ -1,4 +1,4 @@
-package com.example.taehun.myapps;
+package com.example.taehun.myapps.util;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

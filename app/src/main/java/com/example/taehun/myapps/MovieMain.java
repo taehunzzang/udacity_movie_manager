@@ -21,6 +21,11 @@ import android.widget.GridView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.example.taehun.myapps.detail.MovieDetail;
+import com.example.taehun.myapps.util.CustomJsonRequest;
+import com.example.taehun.myapps.util.DbHelper;
+import com.example.taehun.myapps.util.MoviesVolley;
+import com.example.taehun.myapps.util.ValuesStatic;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,12 +36,10 @@ import java.util.ArrayList;
 public class MovieMain extends AppCompatActivity {
 
     MoviesVolley helper = MoviesVolley.getInstance();
-    final static String MY_API_KEY = "c64cba74ee6e14eae65737f936242f41";
+    //final static String MY_API_KEY = "c64cba74ee6e14eae65737f936242f41";
     String sortType="popularity.desc";
     static final String STATE_SORTING = "sortType";
 
-    String RECENT_VIDE = "http://api.themoviedb.org/3/movie/[ID]/videos?api_key="+MY_API_KEY;
-    String RECENT_REVIEW = "http://api.themoviedb.org/3/movie/[ID]/reviews?api_key="+MY_API_KEY;
 
     //-Genre Data------
     ArrayList<MovieGenresItems> mGenreItems;
@@ -121,7 +124,7 @@ public class MovieMain extends AppCompatActivity {
     }
 
     public void loadGerneData(){
-        String RECENT_API_ENDPOINT = "http://api.themoviedb.org/3/genre/movie/list?&api_key="+MY_API_KEY;
+        String RECENT_API_ENDPOINT = "http://api.themoviedb.org/3/genre/movie/list?&api_key="+ ValuesStatic.MY_API_KEY;
         CustomJsonRequest request = new CustomJsonRequest(Request.Method.GET, RECENT_API_ENDPOINT, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
@@ -158,7 +161,7 @@ public class MovieMain extends AppCompatActivity {
 
     public void loadMoviesData(){
         mData.clear();
-        String RECENT_API_ENDPOINT = "http://api.themoviedb.org/3/discover/movie?sort_by="+sortType+"&api_key="+MY_API_KEY;
+        String RECENT_API_ENDPOINT = "http://api.themoviedb.org/3/discover/movie?sort_by="+sortType+"&api_key="+ValuesStatic.MY_API_KEY;
 
 
         Log.e("","mData_ : "+mData.size()+"url : "+RECENT_API_ENDPOINT);

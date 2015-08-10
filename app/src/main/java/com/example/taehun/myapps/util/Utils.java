@@ -1,4 +1,4 @@
-package com.example.taehun.myapps;
+package com.example.taehun.myapps.util;
 
 import android.app.WallpaperManager;
 import android.content.Context;
@@ -14,18 +14,10 @@ import android.view.WindowManager;
 public class Utils {
     private String TAG = Utils.class.getSimpleName();
     private Context _context;
-//    private PrefManager pref;
-
-    // constructor
     public Utils(Context context) {
         this._context = context;
-//        pref = new PrefManager(_context);
     }
 
-    /*
-     * getting screen width
-     */
-    @SuppressWarnings("deprecation")
     public int getScreenWidth() {
         int columnWidth;
         WindowManager wm = (WindowManager) _context
@@ -45,7 +37,6 @@ public class Utils {
     }
     static void initScreen(){
         DisplayMetrics metrics = new DisplayMetrics();
-//        getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
         int width = metrics.widthPixels;
         int height = metrics.heightPixels;
