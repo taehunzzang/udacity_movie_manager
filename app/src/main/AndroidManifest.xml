@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".MovieMain"
+            android:name=".MainActivity"
             android:label="@string/title_activity_movie_main"
             >
             <intent-filter>
@@ -22,10 +22,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".detail.MovieDetail"
+            android:name=".detail.DetailActivity"
             android:label="@string/title_activity_movie_detail"
-            android:parentActivityName=".MovieMain">
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.suport.PARENT_ACTIVITY"
                 android:value="com.example.taehun.myapps.MainActivity"/>

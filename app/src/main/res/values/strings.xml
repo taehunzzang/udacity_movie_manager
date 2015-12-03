@@ -22,4 +22,5 @@
     <!--movie-->
     <string name ="popular">Most Popular</string>
     <string name ="rated">Highest Rated</string>
+    <string name ="favorates">Favorites</string>
 </resources>

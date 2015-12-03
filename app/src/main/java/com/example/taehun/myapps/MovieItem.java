@@ -9,20 +9,23 @@ import android.os.Parcelable;
 public class MovieItem implements Parcelable {
 
 
-    boolean adult = false;
-    String backdrop_path;
     String genre_ids;
     String id;
-    String original_language;
-    String original_title;
     String overview;
     String release_date;
     String poster_path;
     String popularity;
     String title;
-    boolean video = false;
     String vote_average;
     String vote_count;
+    int favor;// 0 is false, 1 is true;
+
+    public int getFavor(){
+        return favor;
+    }
+    public void setFavor(int _favor){
+        favor = _favor;
+    }
 
 
     public MovieItem() {
@@ -33,21 +36,9 @@ public class MovieItem implements Parcelable {
     }
 
 
-    public boolean isAdult() {
-        return adult;
-    }
 
-    public void setAdult(boolean adult) {
-        this.adult = adult;
-    }
 
-    public String getBackdrop_path() {
-        return backdrop_path;
-    }
 
-    public void setBackdrop_path(String backdrop_path) {
-        this.backdrop_path = backdrop_path;
-    }
 
     public String getGenre_ids() {
         return genre_ids;
@@ -65,21 +56,9 @@ public class MovieItem implements Parcelable {
         this.id = id;
     }
 
-    public String getOriginal_language() {
-        return original_language;
-    }
 
-    public void setOriginal_language(String original_language) {
-        this.original_language = original_language;
-    }
 
-    public String getOriginal_title() {
-        return original_title;
-    }
 
-    public void setOriginal_title(String original_title) {
-        this.original_title = original_title;
-    }
 
     public String getOverview() {
         return overview;
@@ -121,13 +100,7 @@ public class MovieItem implements Parcelable {
         this.title = title;
     }
 
-    public boolean isVideo() {
-        return video;
-    }
 
-    public void setVideo(boolean video) {
-        this.video = video;
-    }
 
     public String getVote_average() {
         return vote_average;
@@ -152,39 +125,31 @@ public class MovieItem implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeByte((byte) (adult ? 1 : 0));
-        dest.writeString(backdrop_path);
         dest.writeString(genre_ids);
         dest.writeString(id);
-        dest.writeString(original_language);
-        dest.writeString(original_title);
         dest.writeString(overview);
         dest.writeString(release_date);
         dest.writeString(poster_path);
         dest.writeString(popularity);
         dest.writeString(title);
-        dest.writeByte((byte) (video ? 1 : 0));
         dest.writeString(vote_average);
         dest.writeString(vote_count);
         dest.writeString(title);
+        dest.writeInt(favor);
 
     }
 
     private void readFromParcel(Parcel in) {
-        adult = in.readByte() != 0;
-        backdrop_path = in.readString();
         genre_ids = in.readString();
         id = in.readString();
-        original_language = in.readString();
-        original_title = in.readString();
         overview = in.readString();
         release_date = in.readString();
         poster_path = in.readString();
         popularity = in.readString();
         title = in.readString();
-        video = in.readByte() != 0;
         vote_average = in.readString();
         vote_count = in.readString();
+        favor = in.readInt();
 
     }
 

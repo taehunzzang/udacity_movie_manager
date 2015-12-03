@@ -28,14 +28,12 @@ public class MovieGridAdapter extends ArrayAdapter<MovieItem> {
         this.context = context;
         mData = data;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        mInflater = LayoutInflater.from(context);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder mViewHolder;
         if(convertView == null){
-//            convertView = mInflater.inflate(R.layout.spotify_main_item,null);
             convertView = mInflater.inflate(R.layout.movie_row,null);
             mViewHolder = new ViewHolder();
             mViewHolder.rowImage = (ImageView) convertView.findViewById(R.id.rowImage);
@@ -60,7 +58,7 @@ public class MovieGridAdapter extends ArrayAdapter<MovieItem> {
         mViewHolder.title.setText(mData.get(position).getTitle());
         mViewHolder.title.setSelected(true);
         mViewHolder.genre.setText(mData.get(position).getGenre_ids());
-        Log.e(""," star : "+Float.parseFloat(mData.get(position).getPopularity()));
+//        Log.e(""," star : "+Float.parseFloat(mData.get(position).getPopularity()));
         mViewHolder.rateStar.setRating(Float.parseFloat(mData.get(position).getPopularity())/10);
 
         return convertView;
